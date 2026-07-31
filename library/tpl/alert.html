@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>{$title}</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        html {
+            height: 100%;
+        }
+
+        body {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            font-size: 16px;
+            min-height: 100%;
+            background-color: #f4f6f9;
+        }
+
+        .box {
+            min-width: 300px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .box .header {
+            padding: 15px;
+            background-color: {$backgroundColor};
+            color: #fff;
+        }
+
+        .box .content {
+            padding: 20px 15px;
+            background-color: #fff;
+        }
+
+        .box .footer {
+            padding: 20px 15px;
+            background-color: #fff;
+            border-top: 1px solid #eeeeee;
+            text-align: right;
+        }
+
+        .box .footer a {
+            font-size: 14px;
+            text-decoration: none;
+            padding: 6px 20px;
+            border-radius: 3px;
+        }
+
+        a.confirm {
+            color: #ffffff;
+            background-color: {$backgroundColor};
+        }
+
+        a.cancel {
+            color: #ffffff;
+            background-color: #6c757d;
+        }
+
+        .ml-20 {
+            margin-left: 20px;
+        }
+
+        .hide-cancel {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+<div class="box">
+    <div class="header">{$title}</div>
+    <div class="content">{$content}</div>
+    <div class="footer">
+        <a href="{$url}" class="confirm" title="{$confirmText}">{$confirmText}</a>
+        <a href="{$cancelUrl}" class="cancel ml-20{$hideCancel}" title="{$cancelText}">{$cancelText}</a>
+    </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,19 @@
+<?php
+
+namespace config;
+// session设置
+class Session
+{
+    // 当前会话名称
+    public const NAME = '';
+    // Cookie 的 生命周期，以秒为单位
+    public const LIFETIME = 604800;
+    // 此 cookie 的有效 路径。 on the domain where 设置为“/”表示对于本域上所有的路径此 cookie 都可用
+    public const PATH = '/';
+    // Cookie 的作用 域。 例如：“www.php.net”。 如果要让 cookie 在所有的子域中都可用，此参数必须以点（.）开头，例如：“.php.net”
+    public const DOMAIN = '';
+    // 设置为 TRUE 表示 cookie 仅在使用 安全 链接时可用
+    public const SECURE = false;
+    // 设置为 TRUE 表示 PHP 发送 cookie 的时候会使用 httponly 标记
+    public const HTTPONLY = false;
+}
