@@ -129,7 +129,12 @@ class Controller
     final protected function success(string $msg, string $url = ''): void
     {
         if (empty($url)) {
-            $url = 'javascript:history.go(-1);';
+            $redirectUrl = getServerValue('HTTP_REFERER');
+            if (str_contains($redirectUrl, getAbsoluteUrl())) {
+                $url = $redirectUrl;
+            } else {
+                $url = 'javascript:history.go(-1);';
+            }
         }
         tip($msg, $url, formatUrl: true, icon: 'success');
     }
