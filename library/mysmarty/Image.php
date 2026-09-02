@@ -327,7 +327,7 @@ class Image extends Container
      * @param bool $replaceImage 是否替换原图片
      * @return string|bool
      */
-    public function water(string $text, int $font = 13, int $angle = null, int $startX = null, int $startY = null, array $rgba = [], bool $replaceImage = false): bool|string
+    public function water(string $text, int $font = 13, int|null $angle = null, int|null $startX = null, int|null $startY = null, array $rgba = [], bool $replaceImage = false): bool|string
     {
         if (empty($this->im)) {
             return false;
