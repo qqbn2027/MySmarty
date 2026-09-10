@@ -207,7 +207,7 @@ function getDomain(): string
 {
     $domain = \config\App::APP_DOMAIN ?: getServerValue('HTTP_HOST');
     if (empty($domain)) {
-        $serverName = getServerValue('SERVER_NAME');
+        $serverName = getServerValue('SERVER_NAME', '127.0.0.1');
         if (!empty($serverName)) {
             $serverPort = getServerValue('SERVER_PORT', 80);
             if (!in_array($serverPort, [80, 443])) {
@@ -499,12 +499,13 @@ function redirect(string $url, int $code = 301): void
 
 /**
  * 获取网站网址
+ * @param string $scheme 默认网站访问协议
  * @return string
  */
-function getAbsoluteUrl(): string
+function getAbsoluteUrl(string $scheme = 'https'): string
 {
     if (!defined('URL')) {
-        define('URL', getServerValue('REQUEST_SCHEME', 'http') . '://' . getDomain());
+        define('URL', getServerValue('REQUEST_SCHEME', $scheme) . '://' . getDomain());
     }
     return URL;
 }
