@@ -460,7 +460,12 @@ class Template extends Container
      */
     public function clearCache(): bool
     {
-        return removeDir(RUNTIME_DIR . '/cache');
+        if ('file' === \config\Cache::TYPE) {
+            return removeDir(RUNTIME_DIR . '/cache');
+        } else if ('redis' === \config\Cache::TYPE) {
+            clearCache();
+        }
+        return true;
     }
 
     /**
