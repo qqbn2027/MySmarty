@@ -1560,45 +1560,6 @@ function buildUrl(string $class, string $method, array $methodParams = [], strin
 }
 
 /**
- * 提示信息
- * @param string $url 确认按钮跳转url
- * @param string $content 提示内容
- * @param string $title 提示标题
- * @param string $confirmText 确认按钮文字
- * @param string $cancelUrl 取消按钮跳转url
- * @param string $cancelText 取消按钮文字
- * @param bool $showCancel 是否显示
- * @param int $type 类别：1 成功 2 失败 3 提示
- */
-function alert(string $url, string $content, string $title = '温馨提示', string $confirmText = '确定', string $cancelUrl = '', string $cancelText = '取消', bool $showCancel = false, int $type = 1)
-{
-    if (empty($url)) {
-        $url = 'javascript:void(0);';
-    }
-    if (empty($cancelUrl)) {
-        $cancelUrl = 'javascript:void(0);';
-    }
-    $backgroundColor = match ($type) {
-        1 => '#28a745',
-        2 => '#dc3545',
-        3 => '#007bff',
-        default => '#ffc107',
-    };
-    $html = file_get_contents(LIBRARY_DIR . '/tpl/alert.html');
-    $html = str_ireplace('{$title}', $title, $html);
-    $html = str_ireplace('{$content}', $content, $html);
-    $html = str_ireplace('{$url}', $url, $html);
-    $html = str_ireplace('{$cancelUrl}', $cancelUrl, $html);
-    $html = str_ireplace('{$confirmText}', $confirmText, $html);
-    $html = str_ireplace('{$cancelText}', $cancelText, $html);
-    $html = str_ireplace('{$backgroundColor}', $backgroundColor, $html);
-    $html = str_ireplace('{$hideCancel}', $showCancel ? '' : ' hide-cancel', $html);
-    echoHtmlHeader();
-    echo $html;
-    exit();
-}
-
-/**
  * 获取config配置值，区分大小写
  * @param string $configClass 配置文件的类名
  * @param string $property 配置文件的属性名
