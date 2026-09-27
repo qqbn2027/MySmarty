@@ -472,7 +472,10 @@ function error(string $msg, int $code = 503): void
 {
     $url = '/';
     if ($code >= 400 && $code < 500) {
-        $url = 'javascript:history.go(-1);';
+        $redirectUrl = getServerValue('HTTP_REFERER');
+        if (!empty($redirectUrl) && str_contains($redirectUrl, getAbsoluteUrl())) {
+            $url = 'javascript:history.go(-1);';
+        }
     }
     tip($msg, $url, $code);
 }
