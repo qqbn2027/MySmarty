@@ -192,7 +192,7 @@ function downloadImg(string $imgSrc): string|bool
     if (!createDir($dir)) {
         return false;
     }
-    $filename = md5(time() . $imgSrc) . '.' . $hz;
+    $filename = md5($imgSrc) . '.' . $hz;
     if (file_put_contents($dir . '/' . $filename, $data)) {
         return $pathDir . '/' . $filename;
     }
