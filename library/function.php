@@ -151,40 +151,37 @@ function downloadImg(string $imgSrc): string|bool
         $imgSrc = 'https:' . $imgSrc;
     }
     if (0 === stripos($imgSrc, 'http')) {
-        if (preg_match('/\.jpg/i', $imgSrc)) {
-            $hz = 'jpg';
-        } else if (preg_match('/\.jpeg/i', $imgSrc)) {
-            $hz = 'jpeg';
-        } else if (preg_match('/\.gif/i', $imgSrc)) {
-            $hz = 'gif';
-        } else {
-            $hz = 'png';
-        }
         $data = Query::getInstance()->setPcUserAgent()
             ->setRandIp()
             ->setUrl($imgSrc)
             ->request();
+        $curlInfo = Query::getInstance()->getCurlInfo();
+        if (empty($curlInfo['content_type'])) {
+            return false;
+        }
+        if (!preg_match('/^image/i', $curlInfo['content_type'])) {
+            return false;
+        }
+        $contentType = str_ireplace('image/', '', $curlInfo['content_type']);
+        $hz = strtolower(explode(';', $contentType)[0]);
     } else if (0 === stripos($imgSrc, 'data:image')) {
-        if (preg_match('~^data:image/(.+);base64,~i', $imgSrc, $mat)) {
-            if (false !== stripos($mat[1], 'icon')) {
+        if (preg_match('~^data:image/([^;]+);base64,(.*)$~is', $imgSrc, $mat)) {
+            $hz = strtolower(trim($mat[1]));
+            if (str_contains($hz, 'svg')) {
+                $hz = 'svg';
+            } else if (str_contains($hz, 'icon')) {
                 $hz = 'ico';
-            } else if (false !== stripos($mat[1], 'jpg')) {
+            } else if (str_contains($hz, 'jpeg')) {
                 $hz = 'jpg';
-            } else if (false !== stripos($mat[1], 'jpeg')) {
-                $hz = 'jpeg';
-            } else if (false !== stripos($mat[1], 'gif')) {
-                $hz = 'gif';
-            } else {
-                $hz = 'png';
             }
-            $data = base64_decode(str_ireplace($mat[0], '', $imgSrc));
+            $data = base64_decode($mat[2], true);
         } else {
             return false;
         }
     } else {
         return $imgSrc;
     }
-    if (empty($data)) {
+    if (empty($data) || empty($hz) || !in_array($hz, ['png', 'jpg', 'jpeg', 'gif', 'webp', 'svg', 'avif', 'bmp', 'ico', 'tiff', 'tif', 'heic', 'heif'])) {
         return false;
     }
     $pathDir = '/upload/' . date('Ymd');
