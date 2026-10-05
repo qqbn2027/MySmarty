@@ -194,6 +194,13 @@ class Image extends Container
                     break;
                 case 18:
                     $filename = getRandomString() . '.webp';
+                    // 如果是调色板图像，先转为真彩色
+                    if (!imageistruecolor($this->im)) {
+                        imagepalettetotruecolor($this->im);
+                    }
+                    // 保留透明通道（PNG/GIF 转 WebP 时需要）
+                    imagealphablending($this->im, true);
+                    imagesavealpha($this->im, true);
                     $result = imagewebp($this->im, $dir . '/' . $filename, $this->webpQuality);
                     break;
             }
