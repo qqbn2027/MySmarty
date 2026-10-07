@@ -33,6 +33,29 @@ function formatFileSize(int $size, int $decimals = 2): string
 }
 
 /**
+ * 格式化次数
+ * @param int $count 次数
+ * @return string
+ */
+function formatNum(int $count): string
+{
+    if ($count >= 100000000) {
+        $num = floor($count / 10000000) / 10;
+        $unit = '亿';
+    } elseif ($count >= 10000) {
+        $num = floor($count / 1000) / 10;
+        $unit = '万';
+    } else {
+        return (string)$count;
+    }
+    // 如果是整数，去掉小数点后的 .0
+    if (floor($num) === $num) {
+        return $num . $unit;
+    }
+    return number_format($num, 1, '.', '') . $unit;
+}
+
+/**
  * 是否为GET请求
  * @return bool
  */
@@ -344,7 +367,7 @@ function clearCache(int $expire = 0): int
  */
 function getUserAgent(): string
 {
-    return $_SERVER['HTTP_USER_AGENT'] ?? '';
+    return getServerValue('HTTP_USER_AGENT');
 }
 
 /**
@@ -1024,11 +1047,15 @@ function isMainDomain(string $domain): bool
 
 /**
  * 判断当前是不是手机端
+ * @param string $userAgent
  * @return boolean
  */
-function isMobile(): bool
+function isMobile(string $userAgent = ''): bool
 {
-    if (preg_match('/mobile|android|iphone/i', getServerValue('HTTP_USER_AGENT'))) {
+    if (empty($userAgent)) {
+        $userAgent = getUserAgent();
+    }
+    if (preg_match('/mobile|android|iphone/i', $userAgent)) {
         return true;
     }
     return false;
@@ -1576,11 +1603,14 @@ function config(string $configClass, string $property, mixed $defValue = null): 
 
 /**
  * 判断是否是爬虫
+ * @param string $userAgent
  * @return bool
  */
-function isBot(): bool
+function isBot(string $userAgent = ''): bool
 {
-    $userAgent = getServerValue('HTTP_USER_AGENT');
+    if (empty($userAgent)) {
+        $userAgent = getUserAgent();
+    }
     if (preg_match('/(bot|spider)/i', $userAgent)) {
         return true;
     }
