@@ -341,9 +341,9 @@ class Image extends Container
         }
         $fontFile = LIBRARY_DIR . '/font/noto-sans-sc.otf';
         if (empty($rgba)) {
-            $imagecolorallocateId = imagecolorallocatealpha($this->im, mt_rand(0, 255), mt_rand(0, 255), mt_rand(0, 255), mt_rand(0, 100));
+            $imageColoralLocateId = imagecolorallocatealpha($this->im, mt_rand(0, 255), mt_rand(0, 255), mt_rand(0, 255), mt_rand(0, 100));
         } else {
-            $imagecolorallocateId = imagecolorallocatealpha($this->im, $rgba[0] ?? mt_rand(0, 255), $rgba[1] ?? mt_rand(0, 255), $rgba[2] ?? mt_rand(0, 255), $rgba[3] ?? mt_rand(0, 100));
+            $imageColoralLocateId = imagecolorallocatealpha($this->im, $rgba[0] ?? mt_rand(0, 255), $rgba[1] ?? mt_rand(0, 255), $rgba[2] ?? mt_rand(0, 255), $rgba[3] ?? mt_rand(0, 100));
         }
         if (is_null($angle)) {
             $angle = mt_rand(0, 360);
@@ -359,7 +359,7 @@ class Image extends Container
                 $startY = (int)(($this->height - $height) / 2);
             }
         }
-        if (false !== imagefttext($this->im, $font, $angle, $startX, $startY, $imagecolorallocateId, $fontFile, $text)) {
+        if (false !== imagefttext($this->im, $font, $angle, $startX, $startY, $imageColoralLocateId, $fontFile, $text)) {
             return $this->saveImage($replaceImage);
         }
         return false;
